@@ -12,6 +12,7 @@
 An app that syncs the frame range between a scene and a shot in Shotgun.
 
 """
+
 import os
 import traceback
 
@@ -77,9 +78,7 @@ class SetFrameRange(Application):
             if new_in is None or new_out is None:
                 message = "PTR has not yet been populated with \n"
                 message += "in and out frame data for this Shot."
-                QtGui.QMessageBox.information(
-                    None, "No data in Flow Production Tracking!", message
-                )
+                QtGui.QMessageBox.information(None, "No data in ShotGrid!", message)
                 return
 
             # now update the frame range.
@@ -88,11 +87,12 @@ class SetFrameRange(Application):
             # in Shotgun are the same as the values reported via get_current_frame_range()
             self.set_frame_range(new_in, new_out)
             message = "Your scene has been updated with the \n"
-            message += "latest frame ranges from Flow Production Tracking.\n\n"
+            message += "latest data from ShotGrid.\n\n"
             message += "Previous start frame: %s\n" % current_in
             message += "New start frame: %s\n\n" % new_in
             message += "Previous end frame: %s\n" % current_out
             message += "New end frame: %s\n\n" % new_out
+            message += "Your resolution might also have been updated.\n\n"
 
             QtGui.QMessageBox.information(None, "Frame range updated!", message)
 
@@ -146,6 +146,29 @@ class SetFrameRange(Application):
             )
 
         return (data[sg_in_field], data[sg_out_field])
+
+    def get_resolution_from_shotgun(self) -> list:
+        """
+        Will query the shotgun database for the resolution field associated with this shot.
+
+        :returns: list of [x resolution, y resolution]
+        """
+        entity = self.context.entity
+
+        sg_entity_type = self.context.entity["type"]
+        sg_filters = [["id", "is", entity["id"]]]
+
+        sg_res_field = "sg_resolution"
+        fields = [sg_res_field]
+
+        data = self.shotgun.find_one(sg_entity_type, filters=sg_filters, fields=fields)
+        resolution = data[sg_res_field]
+
+        # Field validation happens on the website, so this should always work.
+        resolution_x = int(resolution.split("*")[0])
+        resolution_y = int(resolution.split("*")[1])
+
+        return [resolution_x, resolution_y]
 
     def get_current_frame_range(self):
         """

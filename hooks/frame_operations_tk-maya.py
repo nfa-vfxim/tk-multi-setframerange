@@ -55,3 +55,12 @@ class FrameOperation(HookBaseClass):
         # set frame ranges for rendering
         cmds.setAttr("defaultRenderGlobals.startFrame", in_frame)
         cmds.setAttr("defaultRenderGlobals.endFrame", out_frame)
+
+        self.set_resolution()  # lol
+
+    def set_resolution(self):
+        """Sets the resolution of the Maya project. We need this right now for an animation project
+        and I don't feel like making a whole new app thingy for this so I'm putting this here."""
+        resolution = self.parent.get_resolution_from_shotgun()
+        cmds.setAttr("defaultResolution.width", resolution[0])
+        cmds.setAttr("defaultResolution.height", resolution[1])
