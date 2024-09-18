@@ -1,21 +1,32 @@
-[![VFX Platform](https://img.shields.io/badge/vfxplatform-2024%20%7C%202023%20%7C%202022%20%7C%202021-blue.svg)](http://www.vfxplatform.com/)
-[![Python](https://img.shields.io/badge/python-3.11%20%7C%203.10%20%7C%203.9%20%7C%203.7-blue.svg)](https://www.python.org/)
-[![Build Status](https://dev.azure.com/shotgun-ecosystem/Toolkit/_apis/build/status/Apps/tk-multi-setframerange?branchName=master)](https://dev.azure.com/shotgun-ecosystem/Toolkit/_build/latest?definitionId=51&branchName=master)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Linting](https://img.shields.io/badge/PEP8%20by-Hound%20CI-a873d1.svg)](https://houndci.com)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/nfa-vfxim/tk-multi-setframerange?include_prereleases)](https://github.com/nfa-vfxim/tk-multi-setframerange) 
+[![GitHub issues](https://img.shields.io/github/issues/nfa-vfxim/tk-multi-setframerange)](https://github.com/nfa-vfxim/tk-multi-setframerange/issues) 
 
-## Documentation
-This repository is a part of the Flow Production Tracking Toolkit.
 
-- For more information about this app and for release notes, *see the wiki section*.
-- For general information and documentation, click here: https://help.autodesk.com/view/SGDEV/ENU/?contextId=SA_INTEGRATIONS_USER_GUIDE
-- For information about Flow Production Tracking in general, click here: https://help.autodesk.com/view/SGSUB/ENU
+# Sync frame range with Flow Production Tracking <img src="icon_256.png" alt="Icon" height="24"/>
 
-## Using this app in your Setup
-All the apps that are part of our standard app suite are pushed to our App Store.
-This is where you typically go if you want to install an app into a project you are
-working on. For an overview of all the Apps and Engines in the Toolkit App Store,
-click here: https://help.autodesk.com/view/SGDEV/ENU/?contextId=PC_TOOLKIT_APPS
+Sync the frame range in your scene with the one stored in Flow Production Tracking.
 
-## Have a Question?
-Don't hesitate to contact us at https://knowledge.autodesk.com/contact-support
+## Requirements
+
+| ShotGrid version | Core version | Engine version |
+|------------------|--------------|----------------|
+| -                | v0.18.0      | -              |
+
+## Configuration
+
+### Strings
+
+| Name                 | Description                                                                                                                                                                                         | Default value                                  |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
+| `menu_name`          | The name that will be shown in the Flow Production Tracking menu.                                                                                                                                   | Sync Frame Range with Flow Production Tracking |
+| `sg_in_frame_field`  | The Flow Production Tracking field to use to retrieve the in frame. The app will look for this field on the entity associated with the current context (e.g. the current shot, current asset etc).  | sg_cut_in                                      |
+| `sg_out_frame_field` | The Flow Production Tracking field to use to retrieve the out frame. The app will look for this field on the entity associated with the current context (e.g. the current shot, current asset etc). | sg_cut_out                                     |
+
+
+### Hooks
+
+| Name                   | Description                                                       | Default value                            |
+|------------------------|-------------------------------------------------------------------|------------------------------------------|
+| `hook_frame_operation` | Hook which contains all methods for setting/getting frame ranges. | {self}/frame_operations_{engine_name}.py |
+
+
