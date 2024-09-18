@@ -60,7 +60,11 @@ class FrameOperation(HookBaseClass):
 
     def set_resolution(self):
         """Sets the resolution of the Maya project. We need this right now for an animation project
-        and I don't feel like making a whole new app thingy for this so I'm putting this here."""
+        and I don't feel like making a whole new app thingy for this so I'm putting this here.
+        Thanks Chris Devito for figuring out this code. Maya makes this weirdly difficult."""
         resolution = self.parent.get_resolution_from_shotgun()
+        device_aspect = float(resolution[0] * 1) / float(resolution[1])
+        cmds.setAttr("defaultResolution.lockDeviceAspectRatio", 1)
         cmds.setAttr("defaultResolution.width", resolution[0])
         cmds.setAttr("defaultResolution.height", resolution[1])
+        cmds.setAttr("defaultResolution.deviceAspectRatio", device_aspect)
